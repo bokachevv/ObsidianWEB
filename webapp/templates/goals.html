@@ -1,0 +1,85 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Our Goals" %}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Rounded:wght@400;600&display=swap');
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'SF Pro Rounded', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 15px 30px;
+            background-color: #6C5DD3;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 30px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #5a4bbd;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>{% trans "Our Goals" %}</h1>
+
+        <p>{% trans "We aim to build a robust, collaborative Markdown editor that seamlessly integrates with Obsidian, allowing multiple users to interact with and manage notes in real-time. Here's a breakdown of what we have accomplished and what lies ahead." %}</p>
+
+        <h2>{% trans "What we have done:" %}</h2>
+        <p>{% trans "1. Implemented basic markdown functionality." %}</p>
+        <p>{% trans "2. Integrated language support for Russian and English." %}</p>
+
+        <h2>{% trans "What we plan to do:" %}</h2>
+        <p>{% trans "1. Develop a multi-user platform for collaborative editing." %}</p>
+        <p>{% trans "2. Implement real-time collaboration features with live updates." %}</p>
+        <p>{% trans "3. Optimize performance for larger vaults and more users." %}</p>
+        <p>{% trans "4. Add support for more languages." %}</p>
+
+
+        <a href="{% url 'homepage' %}" class="button">{% trans "Back to Home" %}</a>
+    </div>
+</body>
+</html>

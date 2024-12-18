@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница не найдена</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            font-size: 48px;
+            color: #FF0000;
+        }
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 16px;
+        }
+        a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>404 - Страница не найдена</h1>
+    <p>Извините, запрашиваемая страница не существует.</p>
+    <a href="{% url 'homepage' %}">Вернуться на главную</a>
+</body>
+</html>

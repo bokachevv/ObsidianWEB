@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+{% load i18n %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Create Note" %}</title>
+    <style>
+        body {
+            background-color: black;
+            font-family: 'SF Pro Rounded', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .note-container {
+            background-color: #1c1c1c;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 300px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #6C5DD3;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #5a4bb0;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+        }
+
+        #modal {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #modal div {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #modal button {
+            background-color: #6C5DD3;
+            color: white;
+            border-radius: 5px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="note-container">
+        <h1>{% trans "Create a New Note" %}</h1>
+        <form method="POST" action="{% url 'create_note' %}">
+            {% csrf_token %}
+            <div>
+                <label for="title">{% trans "Title" %}</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div>
+                <label for="content">{% trans "Content" %}</label>
+                <textarea id="content" name="content" required></textarea>
+            </div>
+            <button type="submit">{% trans "Create Note" %}</button>
+        </form>
+
+        <div class="error-message">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="modal">
+        <div>
+            <p id="modal-message"></p>
+            <button onclick="closeModal()">{% trans "Close" %}</button>
+        </div>
+    </div>
+
+    <script>
+        // Функция для отображения модального окна
+        function showModal(message) {
+            document.getElementById('modal-message').textContent = message;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Отправка формы с обработкой JSON-ответа
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();  // Не отправляем форму сразу
+            var form = this;
+            var data = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: data,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    // Показываем сообщение в модальном окне
+                    showModal(data.message);
+                    form.reset();  // Очищаем форму после отправки
+                }
+            })
+            .catch(error => {
+                alert('An error occurred.');
+            });
+        });
+    </script>
+</body>
+</html>

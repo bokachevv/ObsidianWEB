@@ -1,0 +1,176 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Home" %}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Rounded:wght@400;600&display=swap');
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'SF Pro Rounded', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .button {
+            padding: 15px 30px;
+            background-color: #6C5DD3;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #5a4bbd;
+        }
+
+        .switcher {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .switch-button, .theme-button {
+            background-color: #6C5DD3;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .switch-button:hover, .theme-button:hover {
+            background-color: #5a4bbd;
+        }
+
+        select {
+            background-color: #6C5DD3;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        select option {
+            color: #000;
+        }
+
+        .light-theme {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .light-theme .button {
+            background-color: #6C5DD3;
+            color: #fff;
+        }
+
+        .light-theme .button:hover {
+            background-color: #5a4bbd;
+        }
+
+        /* Стили для формы добавления заметки */
+        #note-form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        #note-list {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .note-item {
+            padding: 10px;
+            background-color: #333;
+            border-radius: 5px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="switcher">
+        <button onclick="setTheme('dark')" class="switch-button">{% trans "Dark" %}</button>
+        <button onclick="setTheme('light')" class="switch-button">{% trans "Light" %}</button>
+    </div>
+
+    <div class="language-switcher">
+        <form action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            <select name="language" onchange="this.form.submit();">
+                <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
+                <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+            </select>
+            <input type="hidden" name="next" value="{{ request.path }}">
+        </form>
+    </div>
+
+    <h1>{% trans "Welcome to the new OBSIDIAN" %}</h1>
+
+    <p>{% trans "Multi-User. Real-time. Shared-work" %}</p>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'markdown_view' filename='homeML' %}" class="button">{% trans "Enter Obsidian Vault" %}</a>
+        <a href="/create_note/"><button class="button">{% trans "Add a Note" %}</button></a>
+        <a href="{% url 'goals_page' %}" target="_blank" class="button">{% trans "Our Goals" %}</a>
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="button" style="border: none; outline: none;">{% trans "Logout" %}</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login_page' %}" class="button">{% trans "Login" %}</a>
+        <a href="{% url 'goals_page' %}" target="_blank" class="button">{% trans "Our Goals" %}</a>
+    {% endif %}
+
+
+</body>
+</html>
